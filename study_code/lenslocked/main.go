@@ -53,6 +53,11 @@ func cantactHandler(w http.ResponseWriter, r *http.Request) {
 // 	// s.DB
 // }
 
+func fqaHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, "<h1> FQA </h1>")
+}
+
 type Router struct {
 	name string
 }
@@ -65,6 +70,9 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	case "/cantact":
 		cantactHandler(w, r)
+		return
+	case "/fqa":
+		fqaHandler(w, r)
 		return
 	default:
 		http.Error(w, router.name, http.StatusNotFound)
