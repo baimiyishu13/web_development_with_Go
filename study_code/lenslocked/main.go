@@ -4,6 +4,8 @@ package main
 //
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -11,10 +13,19 @@ import (
 
 // 基本的 web 应用程序
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	// 设置 Content-Type 类型
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	// w.Header().Set("Content-Type", "/text/plain")
-	fmt.Fprint(w, "<h1>Welcometo my great site! </h1>")
+	tpl, err := template.ParseFiles("./templates/home.gohtml")
+	if err != nil {
+		log.Printf("Parsing template: %v", err)
+		http.Error(w, "The wars an error parsing the template", http.StatusInternalServerError)
+		return
+	}
+	err = tpl.Execute(w, nil)
+	if err != nil {
+		log.Printf("Executing template: %v", err)
+		http.Error(w, "The wars an error Executing the template", http.StatusInternalServerError)
+		return
+	}
 }
 
 // 另一个 界面
